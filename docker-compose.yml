@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+    nginx:
+        image: nginx:latest #Образ nginx
+        volumes:
+            -   ./:/var/www/ #Передача директории сайта на локальный сервер по пути
+            -   ./_docker/nginx/conf.d:/etc/nginx/conf.d #Перенос конфига вебсервара на локальный сервер
+        ports:
+            -   8080:80
+        depends_on:
+            -   app #Зависим от контейнера app
+        container_name: nginx #Название контейнера
+    app:
+        build:
+            context: .
+            dockerfile: _docker/app/Dockerfile #Связь с докерфайл
+        volumes:
+            - ./:/var/www/ #Передача директории сайта на локальный сервер по пути
+        depends_on:
+            - nodejs
+        container_name: php
+    db:
+        image: mysql:8.0 #Образ мускл
+        restart: always #Перезагрузка: Всегда
+        volumes:
+            - ./tmp/db:/var/lib/mysql #Передача базы на локальный сервер
+        environment: #Параметры мускл
+            MYSQL_DATABASE: MySpace #Имя БД
+            MYSQL_ROOT_PASSWORD: root #Пароль БД
+        command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci #Кодировка
+        container_name: db #Название контейнера
+
+    phpmyadmin:
+        image: phpmyadmin:latest
+        restart: always
+        ports:
+            - 3306:80
+        environment:
+            - PMA_ARBITRARY=1
+    nodejs:
+        build:
+            context: .
+            dockerfile: _docker/app/Dockerfile
+        volumes:
+            - ./:/var/www/
+        tty: true
+        container_name: node
