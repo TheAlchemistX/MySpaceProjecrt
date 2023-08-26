@@ -29,7 +29,7 @@ class SpaceController extends Controller
 
     public function show()
     {
-        $user = User::find(Auth::id());
+        $user = User::findOrFail(Auth::id());
         print_r($user->spaces);
     }
 
