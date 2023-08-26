@@ -23,8 +23,8 @@ class SpaceJobTaskController extends Controller
             ]);
             $data['job_id'] = $job->id;
             task::create($data);
-            $timer = abs(strtotime($data['timer']) - strtotime(date("Y-m-d H:i:s")));
 
+            $timer = abs(strtotime($data['timer']) - strtotime(date("Y-m-d H:i:s")));
             dispatch(new SendEmail($data))->delay(now()->addSecond($timer));
         }
     }
