@@ -5,7 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Space;
 use App\Models\SpaceJob;
-use App\Models\task;
+use App\Models\Task;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,6 +24,6 @@ class DatabaseSeeder extends Seeder
          ]);
         Space::factory(10)->create();
         SpaceJob::factory(10)->create();
-        task::factory(10)->create();
+        Task::factory(10)->create();
     }
 }

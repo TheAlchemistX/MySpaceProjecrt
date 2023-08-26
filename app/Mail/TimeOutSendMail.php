@@ -28,7 +28,7 @@ class TimeOutSendMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address(auth()->user()->email, 'Напоминание'),
+            from: new Address('test@mail.ru', 'Напоминание'),
             subject: 'Time Out Send Mail',
         );
     }
