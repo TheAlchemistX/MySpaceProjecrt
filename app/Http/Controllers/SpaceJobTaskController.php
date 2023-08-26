@@ -34,7 +34,7 @@ class SpaceJobTaskController extends Controller
     public function show(Request $request, Space $space, SpaceJob $job)
     {
         $this->authorize('privateJob', [$space, $job]);
-        $tasks = SpaceJob::find($job->id);
+        $tasks = SpaceJob::findOrFail($job->id);
         print_r($tasks);
     }
 

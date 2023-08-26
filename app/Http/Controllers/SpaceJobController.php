@@ -30,7 +30,7 @@ class SpaceJobController extends Controller
     public function show(Space $space)
     {
         $this->authorize('view', $space);
-        $jobs = Space::find($space->id);
+        $jobs = Space::findOrFail($space->id);
         print_r($jobs);
     }
 
