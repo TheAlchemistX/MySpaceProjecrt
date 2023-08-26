@@ -55,4 +55,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+    public function spaces(){
+        return $this->hasMany(Space::class, 'user_id', 'id');
+    }
 }

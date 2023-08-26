@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Space;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
 
 class UserSpacePolicy
 {
@@ -25,6 +26,20 @@ class UserSpacePolicy
             return false;
         }
         return true;
+    }
+    public function privateJob(User $user, $space, $job): bool
+    {
+        if($space->id == $job->space_id) {
+            return true;
+        }
+        return false;
+    }
+    public function privateSpace(User $user, $space): bool
+    {
+        if($space->user_id==Auth::id()) {
+            return true;
+        }
+        return false;
     }
 
     /**

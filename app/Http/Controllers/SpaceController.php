@@ -3,48 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Events\TaskCreated;
+use App\Http\Requests\SpaceRequest;
 use App\Jobs\SendEmail;
 use App\Models\SpaceJob;
-use App\Models\task;
+use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Space;
 use Illuminate\Support\Facades\Auth;
 
 class SpaceController extends Controller
 {
-    public function store()
+
+    public function store(SpaceRequest $request)
     {
-        $data = request()->validate([
-            'name' => 'string',
-            'description' => 'string',
-        ]);
-        $data['user_id'] = Auth::id();
-        Space::create($data);
-    }
-    public function show()
-    {
-        $spaces = Space::where('user_id', Auth::id())->get();
+        $data = $request->validated();
+        if (!empty($data)) {
+            $data['user_id'] = Auth::id();
+            Space::create($data);
+            print_r($data);
+        } else {
+            print_r('Заполните данные');
+        }
     }
 
-    public function update(Space $space){
-        if($space->user_id==Auth::id()) {
-            $data = request()->validate([
-                'name' => 'string',
-                'description' => 'string',
-            ]);
-            $data['user_id'] = Auth::id();
-            $space->update($data);
-        }
+    public function show()
+    {
+        $user = User::find(Auth::id());
+        print_r($user->spaces);
     }
-    public function destroy(Space $space){
-        if($space->user_id==Auth::id()) {
-            /*$jobs = SpaceJob::where('space_id', $space->id);
-            foreach ($jobs as $job){
-                $task = task::where('job_id', $job->id);
-                $task->delete();
-            }
-            $jobs->delete();*/
-            $space->delete();
-        }
+
+    public function update(Space $space, SpaceRequest $request)
+    {
+        $this->authorize('privateSpace', $space);
+        $data = $request->validated();
+        $space->update($data);
+        print_r($data);
+
+    }
+
+    public function destroy(Space $space)
+    {
+        $this->authorize('privateSpace', $space);
+        $space->delete();
     }
 }

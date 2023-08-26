@@ -10,4 +10,7 @@ class SpaceJob extends Model
     protected $table = 'SpaceJobs';
     protected $guarded = [];
     use HasFactory;
+    public function tasks(){
+        return $this->hasMany(Task::class, 'job_id', 'id');
+    }
 }

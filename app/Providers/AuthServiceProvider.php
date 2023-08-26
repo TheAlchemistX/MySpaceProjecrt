@@ -5,6 +5,8 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\Gate;
 use App\Models\job;
 use App\Models\Space;
+use App\Models\SpaceJob;
+use App\Policies\SpaceJobPolicy;
 use App\Policies\TaskSpacePolicy;
 use App\Policies\UserSpacePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -18,7 +20,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Space::class =>UserSpacePolicy::class,
-        job::class =>TaskSpacePolicy::class
     ];
 
     /**

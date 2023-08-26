@@ -29,7 +29,6 @@ class SendEmail implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::to('test@test.ru')->send(new TimeOutSendMail());
-//        event(new TaskCreated($this->data));
+        Mail::to(auth()->user()->email)->send(new TimeOutSendMail());
     }
 }
