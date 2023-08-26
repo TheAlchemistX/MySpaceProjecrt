@@ -23,6 +23,8 @@ class SpaceController extends Controller
     }
     public function show()
     {
+        dd(date("Y-m-d H:i:s"));
+
         $spaces = Space::where('user_id', Auth::id())->get();
     }
 
@@ -38,12 +40,6 @@ class SpaceController extends Controller
     }
     public function destroy(Space $space){
         if($space->user_id==Auth::id()) {
-            /*$jobs = SpaceJob::where('space_id', $space->id);
-            foreach ($jobs as $job){
-                $task = task::where('job_id', $job->id);
-                $task->delete();
-            }
-            $jobs->delete();*/
             $space->delete();
         }
     }
