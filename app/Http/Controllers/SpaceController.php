@@ -3,39 +3,41 @@
 namespace App\Http\Controllers;
 
 use App\Events\TaskCreated;
+use App\Http\Requests\SpaceRequest;
 use App\Jobs\SendEmail;
 use App\Models\SpaceJob;
 use App\Models\task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Space;
 use Illuminate\Support\Facades\Auth;
 
 class SpaceController extends Controller
 {
-    public function store()
+
+    public function store(SpaceRequest $request)
     {
-        $data = request()->validate([
-            'name' => 'string',
-            'description' => 'string',
-        ]);
-        $data['user_id'] = Auth::id();
-        Space::create($data);
+        $data = $request->validated();
+        if(!empty($data)) {
+            $data['user_id'] = Auth::id();
+            Space::create($data);
+            print_r($data);
+        }else{
+            print_r('Заполните данные');
+        }
     }
     public function show()
     {
-        dd(date("Y-m-d H:i:s"));
-
         $spaces = Space::where('user_id', Auth::id())->get();
+        print_r($spaces);
     }
 
-    public function update(Space $space){
+    public function update(Space $space, SpaceRequest $request){
         if($space->user_id==Auth::id()) {
-            $data = request()->validate([
-                'name' => 'string',
-                'description' => 'string',
-            ]);
+            $data = $request->validated();
             $data['user_id'] = Auth::id();
             $space->update($data);
+            print_r($data);
         }
     }
     public function destroy(Space $space){
