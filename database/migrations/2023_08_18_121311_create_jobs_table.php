@@ -18,6 +18,11 @@ return new class extends Migration
             $table->unsignedTinyInteger('attempts');
             $table->unsignedInteger('reserved_at')->nullable();
             $table->unsignedInteger('available_at');
+
+            $table->unsignedBigInteger('task_id')->nullable();
+            $table->index('task_id', 'job_task_idx');
+            $table->foreign('task_id', 'job_task_fk')->on('tasks')->references('id')->onDelete('cascade');
+
             $table->unsignedInteger('created_at');
         });
     }
